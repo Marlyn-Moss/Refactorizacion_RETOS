@@ -17,20 +17,21 @@ import persistencia.PedidoRepositoryMemoria;
 import validacion.ValidadorPedido;
 
 /**
- * Clase principal para demostrar el funcionamiento del laboratorio SOLID (SRP,
- * OCP y LSP) con los 4 casos de prueba requeridos.
+ * Clase principal para demostrar el funcionamiento del laboratorio con los
+ * cinco principios SOLID (SRP, OCP, LSP, ISP y DIP) y los 4 casos de prueba.
  */
 public class Main {
 
     public static void main(String[] args) {
-        // 1. Inicialización de los componentes con responsabilidad única (SRP)
+        // 1. Creación de las dependencias externas (Composición para cumplir DIP)
         ValidadorPedido validador = new ValidadorPedido();
         CalculadoraIVA calculadoraIVA = new CalculadoraIVA();
         CalculadoraTotal calculadoraTotal = new CalculadoraTotal(calculadoraIVA);
         PedidoRepository repositorio = new PedidoRepositoryMemoria();
         Notificador notificador = new NotificadorConsola();
 
-        // 2. Creación del coordinador GestorPedidos
+        // 2. Inyección de dependencias por constructor en GestorPedidos (DIP)
+        // GestorPedidos recibe las abstracciones sin usar 'new' internamente.
         GestorPedidos gestor = new GestorPedidos(
                 validador,
                 calculadoraTotal,
@@ -92,7 +93,7 @@ public class Main {
         System.out.println();
 
         System.out.println("==============================================================");
-        System.out.println("Total de pedidos almacenados en memoria: " + repositorio.obtenerTodos().size());
+        System.out.println("Ejecución completada aplicando los 5 principios SOLID.");
         System.out.println("==============================================================");
     }
 

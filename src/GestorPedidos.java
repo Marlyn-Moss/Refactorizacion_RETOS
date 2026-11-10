@@ -7,19 +7,24 @@ import persistencia.PedidoRepository;
 import validacion.ValidadorPedido;
 
 /**
- * Clase coordinadora del proceso de registro de pedidos (Refactorizada con SOLID).
+ * Clase coordinadora del proceso de registro de pedidos (Refactorizada con los 5 principios SOLID).
  * 
- * - Cumple SRP: Ya no valida por su cuenta, ni calcula descuentos o IVA, ni se conecta
- *   a una base de datos ni envía correos directamente. Su única responsabilidad es
- *   coordinar el flujo delegando cada tarea a su clase especialista.
+ * - Cumple SRP: Su única responsabilidad es coordinar el flujo de registro delegando
+ *   validación, cálculo, persistencia y notificación a clases especializadas.
  * 
  * - Cumple OCP: No contiene condicionales (if/else ni switch) para evaluar tipos de
- *   cliente. Recibe la interfaz polimórfica Descuento, por lo que está cerrada a la
- *   modificación pero abierta a la extensión cuando se crean nuevos descuentos.
+ *   cliente. Recibe la interfaz polimórfica Descuento, quedando abierta a la extensión
+ *   y cerrada a la modificación.
  * 
- * - Cumple LSP: Trabaja con cualquier objeto que implemente la interfaz Descuento
- *   (DescuentoNormal, DescuentoVIP, DescuentoFrecuente, DescuentoEstudiante) sin
- *   alterar su comportamiento ni necesitar conocer el subtipo concreto.
+ * - Cumple LSP: Trabaja con cualquier implementación de Descuento (DescuentoNormal,
+ *   DescuentoVIP, DescuentoFrecuente, DescuentoEstudiante) sin alterar su flujo.
+ * 
+ * - Cumple ISP: Consume interfaces pequeñas y cohesivas (Descuento, PedidoRepository,
+ *   Notificador) de las cuales utiliza todos sus métodos.
+ * 
+ * - Cumple DIP: Depende de abstracciones (PedidoRepository y Notificador) y recibe
+ *   todas sus dependencias mediante inyección por constructor, sin instanciar
+ *   implementaciones concretas con 'new' dentro de esta clase.
  */
 public class GestorPedidos {
 
